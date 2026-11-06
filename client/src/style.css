@@ -1,0 +1,129 @@
+:root {
+  /* โทนกลางคืนริมสระ + ไฟนีออน */
+  --night: #0d0a2e;
+  --night-2: #1a1250;
+  --night-3: #2a1d72;
+  --glass: rgba(255, 255, 255, .06);
+  --glass-line: rgba(255, 255, 255, .14);
+  --water-hi: #7ff3ff;
+  --water: #19c8f0;
+  --water-deep: #0a6fb8;
+  --abyss: #062a5c;
+  --deck: #f4f1ff;
+  --deck-2: #e2dcff;
+  --deck-line: #cfc6f5;
+  --sun: #ffd23f;
+  --sun-deep: #e8860c;
+  --pop: #ff2e88;
+  --pop-deep: #b0145a;
+  --cyan: #22e4ff;
+  --mint: #3dffa8;
+  --mint-deep: #0b8a57;
+  /* วิดีโอเล็กมุมจอในหน้าสรุปคะแนน (QuestionCard วางวิดีโอ · Scoreboard วางป้ายชื่อเพลง ให้ตรงกัน) */
+  --mini-w: min(38vw, 360px);
+  --mini-r: 20px;
+  --mini-b: 20px;
+  --ink: #140f3a;
+  --ink-soft: #5b5390;
+  --on-night: #f3f0ff;
+  --on-night-soft: #b9b2e6;
+  --font-display: "Mitr", "Noto Sans Thai", system-ui, sans-serif;
+  --font-body: "Noto Sans Thai", "Mitr", system-ui, sans-serif;
+  color-scheme: light;
+}
+html[data-view="game"] {
+  --font-display: "Kanit", "Noto Sans Thai", system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; }
+html, body { min-height: 100%; }
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; }
+[hidden] { display: none !important; }
+
+/* ---------- ปาร์ตี้สระน้ำกลางคืน (พื้นหลังหน้าเกม) ---------- */
+html[data-view="game"] body {
+  color: var(--on-night);
+  background:
+    radial-gradient(60% 40% at 50% 110%, rgba(34, 228, 255, .28), transparent 70%),
+    radial-gradient(50% 35% at 0% 0%, rgba(255, 46, 136, .22), transparent 70%),
+    radial-gradient(50% 35% at 100% 10%, rgba(120, 80, 255, .3), transparent 70%),
+    linear-gradient(180deg, var(--night) 0%, var(--night-2) 65%, #10306a 100%) fixed;
+  background-attachment: fixed;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+/* ไฟสปอตไลต์กวาดช้า ๆ */
+html[data-view="game"] body::before {
+  content: "";
+  position: fixed; inset: -30% -10% auto; height: 120vh;
+  pointer-events: none; z-index: 0;
+  background:
+    conic-gradient(from 160deg at 15% 0%, transparent 0 8deg, rgba(255, 46, 136, .16) 12deg, transparent 18deg 360deg),
+    conic-gradient(from 180deg at 85% 0%, transparent 0 6deg, rgba(34, 228, 255, .14) 10deg, transparent 16deg 360deg);
+  filter: blur(6px);
+  animation: sweep 9s ease-in-out infinite alternate;
+  transform-origin: 50% 0;
+}
+/* ประกายไฟ bokeh */
+html[data-view="game"] body::after {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: .7;
+  background:
+    radial-gradient(2px 2px at 12% 18%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 72% 8%, #fff, transparent),
+    radial-gradient(2px 2px at 88% 34%, #ffd23f, transparent),
+    radial-gradient(1.5px 1.5px at 32% 42%, #22e4ff, transparent),
+    radial-gradient(2px 2px at 54% 22%, #ff8fc0, transparent),
+    radial-gradient(1.5px 1.5px at 6% 66%, #fff, transparent),
+    radial-gradient(2px 2px at 94% 78%, #22e4ff, transparent);
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+@keyframes sweep { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+@keyframes twinkle { to { opacity: .35; } }
+
+/* ---------- ปุ่มหลัก: นีออนชมพู-ส้ม ---------- */
+.btn-pop {
+  border: 0;
+  border-radius: 999px;
+  padding: 15px 28px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: .01em;
+  color: #fff;
+  background: linear-gradient(100deg, var(--pop) 0%, #ff5a5f 55%, #ff9f1c 100%);
+  box-shadow: 0 5px 0 var(--pop-deep), 0 0 26px rgba(255, 46, 136, .55), inset 0 2px 0 rgba(255, 255, 255, .35);
+  transition: transform .12s, box-shadow .12s, filter .2s;
+  min-height: 52px;
+}
+.btn-pop:hover { filter: brightness(1.08); }
+.btn-pop:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--pop-deep), 0 0 18px rgba(255, 46, 136, .45); }
+.btn-pop:disabled { filter: grayscale(.7) brightness(.8); opacity: .55; cursor: not-allowed; box-shadow: none; }
+
+/* ตัวหนังสือหัวเกม: นีออนเอียงแบบเกมโชว์ */
+.puffy {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-style: italic;
+  color: #fff;
+  letter-spacing: -.01em;
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, .6),
+    0 0 18px var(--glow, var(--pop)),
+    0 0 42px var(--glow, var(--pop)),
+    0 4px 0 var(--glow-deep, var(--pop-deep));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
